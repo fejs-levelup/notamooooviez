@@ -1,0 +1,25 @@
+{
+  "name": "notamooooviez",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node index"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/fejs-levelup/notamooooviez.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/fejs-levelup/notamooooviez/issues"
+  },
+  "homepage": "https://github.com/fejs-levelup/notamooooviez#readme",
+  "dependencies": {
+    "express": "^4.15.4",
+    "pug": "^2.0.0-rc.3"
+  }
+}

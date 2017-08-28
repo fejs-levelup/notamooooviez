@@ -1,0 +1,12 @@
+doctype html
+head
+  meta(charset="utf-8")
+  title NotITunes
+
+  link(rel="stylesheet", href="/css/main.css")
+body
+  h1 not iTunes
+
+  ul
+    each link in nav
+      li: a(href= link.url)= link.title
