@@ -1,0 +1,19 @@
+doctype html
+head
+  meta(charset="utf-8")
+  title NotITunes
+
+  link(rel="stylesheet", href="/css/main.css")
+body
+  h1= headline
+
+  if error
+    p= error
+  form(action="/create-nav", method="POST")
+    label Nav URL
+      input(type="text", required, name="url")
+    br
+    label Nav Title
+      input(type="text", required, name="title")
+    br
+    button Add Nav Item
