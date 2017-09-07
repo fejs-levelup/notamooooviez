@@ -62,6 +62,11 @@ app.use(require("express-session")({ secret: "levelup 2017" }));
 app.use(passport.initialize());
 app.use(passport.session());
 
+app.use((req, res, next) => {
+  console.log("URL:", req.url);
+  next();
+});
+
 passport.serializeUser((user, done) => {
   done(null, user.username);
 });
@@ -170,9 +175,19 @@ app
         errorMessage: "Please try again"
       });
 
-      res.redirect("/");
+      req.login(user, err => {
+        if(err)
+          return res.redirect("/login");
+
+        res.redirect("/");
+      });
     });
   });
+
+app.get("/signout", (req, res) => {
+  req.logout();
+  res.redirect("/login");
+});
 
 app
   .route("/create-nav")
@@ -218,6 +233,18 @@ app
       });
     });
   });
+
+
+app
+  .route("/playlist")
+  .get((req, res) => {
+    res.render("create-playlist");
+  })
+  .post((req, res) => {
+  console.log(req.body);
+
+  res.send(req.body);
+});
 
 // app.get("*", (req, res) => {
 //   res.render("index", { nav });
