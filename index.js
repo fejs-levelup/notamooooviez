@@ -85,6 +85,18 @@ passport.use(new LocalStrategy((username, password, done) => {
   });
 }));
 
+app.get("/*", (req, res, next) => {
+  const { url, user } = req;
+
+  if(!user && url !== "/login" && url !== "/signup")
+    return res.redirect("/login");
+
+  if(user && (url === "/login" || url === "/signup"))
+    return res.redirect("/");
+
+  next();
+});
+
 app.get("/", (req, res) => {
   Nav.find({}, (err, data) => {
     if(err) {
@@ -96,7 +108,7 @@ app.get("/", (req, res) => {
       url: navItem.url
     }));
 
-    res.render("index", { nav });
+    res.render("index", { nav, user: req.user });
   });
 });
 
