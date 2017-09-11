@@ -13,4 +13,13 @@ body
 
   p= user.username
 
+  div.playlist-container
+    each playlist in playlists
+      - var src = playlist.cover || "http://cdn3-www.cattime.com/assets/uploads/2011/08/best-kitten-names-1.jpg";
+
+      div
+        div: img(src=src)
+        h3= playlist.title
+        p= playlist.description
+
   p: a(href="/signout") Sign out

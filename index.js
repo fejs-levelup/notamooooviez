@@ -3,6 +3,8 @@ const express = require("express"),
   mongoose = require("mongoose"),
   navSchema = require("./schemas/nav"),
   userSchema = require("./schemas/users"),
+  playlistSchema = require("./schemas/playlist"),
+  songSchema = require("./schemas/song"),
   bodyParser = require("body-parser"),
   multer = require("multer"),
   passport = require("passport"),
@@ -11,8 +13,12 @@ const express = require("express"),
 
 const Nav = mongoose.model("AppNav", navSchema);
 const User = mongoose.model("User", userSchema);
+const Playlist = mongoose.model("Playlist", playlistSchema);
+const Songs = mongoose.model("Songs", songSchema);
 
-mongoose.connect("mongodb://localhost/notitunes", { useMongoClient: true });
+mongoose.connect("mongodb://localhost/notitunes", {
+  useMongoClient: true
+});
 
 mongoose.connection.on("open", () => {
   console.log("Connected!!!");
@@ -103,18 +109,40 @@ app.get("/*", (req, res, next) => {
 });
 
 app.get("/", (req, res) => {
-  Nav.find({}, (err, data) => {
-    if(err) {
-      return res.status(404).end();
-    }
 
-    const nav = data.map(navItem => ({
-      title: navItem.title,
-      url: navItem.url
-    }));
+  const navReq = new Promise((res, rej) => {
+    Nav.find({}, (err, data) => {
+      if(err) return rej(err);
 
-    res.render("index", { nav, user: req.user });
+      res(data);
+    });
   });
+
+  const playlistsReq = new Promise((res, rej) => {
+    Playlist.find({}, (err, data) => {
+      if(err) return rej(err);
+
+      res(data);
+    });
+  });
+
+  Promise
+    .all([ navReq, playlistsReq ])
+    .then(([ navData, playlists ]) => {
+      const nav = navData.map(navItem => ({
+        title: navItem.title,
+        url: navItem.url
+      }));
+
+      res.render("index", {
+        nav,
+        user: req.user,
+        playlists
+      });
+    })
+    .catch(err => {
+      res.status(404).end();
+    });
 });
 
 app
@@ -241,10 +269,40 @@ app
     res.render("create-playlist");
   })
   .post((req, res) => {
-  console.log(req.body);
+    const {
+      plTitle: title,
+      plDescription: description,
+      coverUrl: cover
+    } = req.body;
 
-  res.send(req.body);
-});
+    if(typeof title !== "string" || !title.trim().length)
+      return res.status(400).send({
+        error: "Title is not valid"
+      });
+
+    if(typeof description !== "string" || !description.trim().length)
+      return res.status(400).send({
+        error: "Description is not valid"
+      });
+
+    if(typeof cover === "string" && !cover.trim().length)
+      return res.status(400).send({
+        error: "Cover url is not valid"
+      });
+
+    Playlist.create({
+      title,
+      description,
+      cover: typeof cover !== "string" ? null : cover
+    }, (err, data) => {
+      if(err)
+        return res.status(500).send({
+          error: "Can not save Playlist"
+        });
+
+      res.send(data);
+    });
+  });
 
 // app.get("*", (req, res) => {
 //   res.render("index", { nav });
