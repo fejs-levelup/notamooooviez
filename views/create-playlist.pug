@@ -13,18 +13,20 @@ body
     label Description*
       input(type="text", name="pl-description", required)
 
-    fieldset
-      legend Add cover
+    div.fieldset
+      div.preview-source
+        input#url(type="radio", name="cover-type", value="url", checked)
+        label(for="url") URL
 
-      input#url(type="radio", name="cover-type", value="url", checked)
-      label(for="url") URL
+        input#file(type="radio", name="cover-type", value="file")
+        label(for="file") Upload
 
-      input#file(type="radio", name="cover-type", value="file")
-      label(for="file") Upload
+        br
+        input.cover(type="text", name="cover-url")
+        button#load-preview(type="button") Load
+        input.cover(type="file", name="cover-file")
 
-      br
-      input.cover(type="text", name="cover-url")
-      input.cover(type="file", name="cover-file")
-    button Add Playlist
+      div.preview &nbsp;
+    button(type="submit") Add Playlist
 
   script(src="/js/create-playlist.js")

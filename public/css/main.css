@@ -32,9 +32,16 @@ h1 {
   padding: 0 0 0 10px;
 }
 
-#add-playlist fieldset {
-  border: 1px solid #333;
-  padding: 10px;
+#add-playlist .fieldset {
+  display: flex;
+  height: 70px;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.preview {
+  height: 70px;
+  width: 140px;
 }
 
 #add-playlist legend {
@@ -42,15 +49,17 @@ h1 {
   border: 1px solid #333;
 }
 
-#add-playlist fieldset label {
+#add-playlist .fieldset label {
   padding: 0 20px 0 10px;
 }
 
-[name="cover-type"] ~ .cover {
+[name="cover-type"] ~ .cover,
+#load-preview {
   display: none;
 }
 
-[value="url"]:checked ~ [name="cover-url"] {
+[value="url"]:checked ~ [name="cover-url"],
+[value="url"]:checked ~ #load-preview {
   display: inline-block;
 }
 
@@ -58,7 +67,14 @@ h1 {
   display: inline-block;
 }
 
-#add-playlist button {
+#load-preview {
+  height: 17px;
+  border: none;
+  margin-left: 5px;
+  width: 40px;
+}
+
+#add-playlist > button {
   margin: 20px auto 0;
   width: 100px;
   height: 30px;
