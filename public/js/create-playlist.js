@@ -27,10 +27,12 @@
 
     fetch("/playlist", {
       method: "POST",
-      body: JSON.stringify({ plTitle, plDescription, coverUrl }),
-      headers: {
-        "content-type": "application/json"
-      }
+      // body: JSON.stringify({ plTitle, plDescription, coverUrl }),
+      body: new FormData($form),
+      // headers: {
+      //   // "content-type": "application/json"
+      //   "content-type": "multipart/form-data"
+      // }
     })
     .then(res => {
       console.log(res);

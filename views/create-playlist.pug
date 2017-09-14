@@ -9,12 +9,22 @@ body
   form#add-playlist(action="/playlist", method="POST")
     label Playlist title*
       input(type="text", name="pl-title", required)
-    br
+
     label Description*
       input(type="text", name="pl-description", required)
-    br
-    label Cover
-      input(type="text", name="cover-url")
+
+    fieldset
+      legend Add cover
+
+      input#url(type="radio", name="cover-type", value="url", checked)
+      label(for="url") URL
+
+      input#file(type="radio", name="cover-type", value="file")
+      label(for="file") Upload
+
+      br
+      input.cover(type="text", name="cover-url")
+      input.cover(type="file", name="cover-file")
     button Add Playlist
 
   script(src="/js/create-playlist.js")

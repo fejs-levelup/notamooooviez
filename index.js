@@ -7,6 +7,17 @@ const express = require("express"),
   songSchema = require("./schemas/song"),
   bodyParser = require("body-parser"),
   multer = require("multer"),
+  storage = multer.diskStorage({
+    destination(req, file, cb) {
+      cb(null, __dirname + "/public/uploads");
+    },
+    filename(req, file, cb) {
+      console.log(file);
+
+      cb(null, file.originalname);
+    }
+  }),
+  upload = multer({ storage }),
   passport = require("passport"),
   cookieParser = require("cookie-parser"),
   LocalStrategy = require("passport-local").Strategy;
@@ -268,40 +279,43 @@ app
   .get((req, res) => {
     res.render("create-playlist");
   })
-  .post((req, res) => {
-    const {
-      plTitle: title,
-      plDescription: description,
-      coverUrl: cover
-    } = req.body;
+  .post(upload.single("cover-file"), (req, res) => {
 
-    if(typeof title !== "string" || !title.trim().length)
-      return res.status(400).send({
-        error: "Title is not valid"
-      });
 
-    if(typeof description !== "string" || !description.trim().length)
-      return res.status(400).send({
-        error: "Description is not valid"
-      });
+    res.send(req.body);
+    // const {
+    //   plTitle: title,
+    //   plDescription: description,
+    //   coverUrl: cover
+    // } = req.body;
 
-    if(typeof cover === "string" && !cover.trim().length)
-      return res.status(400).send({
-        error: "Cover url is not valid"
-      });
+    // if(typeof title !== "string" || !title.trim().length)
+    //   return res.status(400).send({
+    //     error: "Title is not valid"
+    //   });
 
-    Playlist.create({
-      title,
-      description,
-      cover: typeof cover !== "string" ? null : cover
-    }, (err, data) => {
-      if(err)
-        return res.status(500).send({
-          error: "Can not save Playlist"
-        });
+    // if(typeof description !== "string" || !description.trim().length)
+    //   return res.status(400).send({
+    //     error: "Description is not valid"
+    //   });
 
-      res.send(data);
-    });
+    // if(typeof cover === "string" && !cover.trim().length)
+    //   return res.status(400).send({
+    //     error: "Cover url is not valid"
+    //   });
+
+    // Playlist.create({
+    //   title,
+    //   description,
+    //   cover: typeof cover !== "string" ? null : cover
+    // }, (err, data) => {
+    //   if(err)
+    //     return res.status(500).send({
+    //       error: "Can not save Playlist"
+    //     });
+
+    //   res.send(data);
+    // });
   });
 
 // app.get("*", (req, res) => {

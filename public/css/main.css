@@ -7,3 +7,59 @@ h1 {
   font-family: arial, sans-serif;
   text-transform: uppercase;
 }
+
+#add-playlist {
+  width: 90vw;
+  max-width: 400px;
+  display: flex;
+  flex-direction: column;
+  padding: 20px;
+  background: #cfe1ea;
+  font-size: 16px;
+}
+
+#add-playlist > label {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+#add-playlist > label input {
+  width: 250px;
+  height: 24px;
+  border: 1px solid #333;
+  padding: 0 0 0 10px;
+}
+
+#add-playlist fieldset {
+  border: 1px solid #333;
+  padding: 10px;
+}
+
+#add-playlist legend {
+  padding: 5px;
+  border: 1px solid #333;
+}
+
+#add-playlist fieldset label {
+  padding: 0 20px 0 10px;
+}
+
+[name="cover-type"] ~ .cover {
+  display: none;
+}
+
+[value="url"]:checked ~ [name="cover-url"] {
+  display: inline-block;
+}
+
+[value="file"]:checked ~ [name="cover-file"] {
+  display: inline-block;
+}
+
+#add-playlist button {
+  margin: 20px auto 0;
+  width: 100px;
+  height: 30px;
+}
