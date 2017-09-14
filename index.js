@@ -280,42 +280,45 @@ app
     res.render("create-playlist");
   })
   .post(upload.single("cover-file"), (req, res) => {
+    const {
+      ["pl-title"]: title,
+      ["pl-description"]: description,
+      ["cover-type"]: coverType,
+      ["cover-url"]: url
+    } = req.body;
 
+    let coverUrl = null;
 
-    res.send(req.body);
-    // const {
-    //   plTitle: title,
-    //   plDescription: description,
-    //   coverUrl: cover
-    // } = req.body;
+    const file = req.file;
 
-    // if(typeof title !== "string" || !title.trim().length)
-    //   return res.status(400).send({
-    //     error: "Title is not valid"
-    //   });
+    if(coverType === "file" && file) {
+      coverUrl = `/uploads/${file.originalname}`;
+    } else if(coverType === "url" && typeof url === "string" && !url.trim().length) {
+      coverUrl = url;
+    }
 
-    // if(typeof description !== "string" || !description.trim().length)
-    //   return res.status(400).send({
-    //     error: "Description is not valid"
-    //   });
+    if(typeof title !== "string" || !title.trim().length)
+      return res.status(400).send({
+        error: "Title is not valid"
+      });
 
-    // if(typeof cover === "string" && !cover.trim().length)
-    //   return res.status(400).send({
-    //     error: "Cover url is not valid"
-    //   });
+    if(typeof description !== "string" || !description.trim().length)
+      return res.status(400).send({
+        error: "Description is not valid"
+      });
 
-    // Playlist.create({
-    //   title,
-    //   description,
-    //   cover: typeof cover !== "string" ? null : cover
-    // }, (err, data) => {
-    //   if(err)
-    //     return res.status(500).send({
-    //       error: "Can not save Playlist"
-    //     });
+    Playlist.create({
+      title,
+      description,
+      cover: coverUrl
+    }, (err, data) => {
+      if(err)
+        return res.status(500).send({
+          error: "Can not save Playlist"
+        });
 
-    //   res.send(data);
-    // });
+      res.send(data);
+    });
   });
 
 // app.get("*", (req, res) => {
