@@ -96,6 +96,10 @@ h1 {
   border-radius: 5px;
 }
 
+.file-container.hovered {
+  background: rgba(0,0,0,.1);
+}
+
 #load-preview {
   height: 17px;
   border: none;

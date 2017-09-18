@@ -8,10 +8,18 @@
   const $fileCover = document.querySelector(".cover[type=file]");
   const $previewTypes = Array.from(document.querySelectorAll(".preview-source [type=radio]"));
   const $previewContainer = document.querySelector(".cover-preview");
+  const $fileContainer = document.querySelector(".file-container");
+
+  $fileContainer.addEventListener("dragover", onDragOver);
+  $fileContainer.addEventListener("drop", onDrop);
+  $fileContainer.addEventListener("dragend", removeHovered);
+  $fileContainer.addEventListener("dragleave", removeHovered);
 
   $form.addEventListener("submit", createPlaylist);
   $loadPreview.addEventListener("click", loadPreview);
   $fileCover.addEventListener("change", onSelectImage);
+
+  let playlistCover = null;
 
   function createPlaylist(ev) {
     ev.preventDefault();
@@ -31,14 +39,29 @@
       return $plDescription.parentElement.classList.add("invalid");
     }
 
+    const formData = new FormData();
+
+    formData.append("pl-title", plTitle);
+    formData.append("pl-description", plDescription);
+
+    const selectedCoverType = $previewTypes.find(radio => radio.checked);
+
+    formData.append("cover-type", selectedCoverType.value);
+
+    switch(selectedCoverType.value) {
+      case "url":
+        formData.append("cover-url", coverUrl);
+        break;
+      case "file":
+        if(!playlistCover) return;
+
+        formData.append("cover-file", playlistCover, playlistCover.name);
+        break;
+    }
+
     fetch("/playlist", {
       method: "POST",
-      // body: JSON.stringify({ plTitle, plDescription, coverUrl }),
-      body: new FormData($form),
-      // headers: {
-      //   // "content-type": "application/json"
-      //   "content-type": "multipart/form-data"
-      // }
+      body: formData
     })
     .then(res => {
       console.log(res);
@@ -46,6 +69,7 @@
       $plTitle.value = "";
       $plDescription.value = "";
       $plCover.value = "";
+      playlistCover = null;
     })
     .catch(err => {
       console.error(err);
@@ -65,6 +89,8 @@
     const file = ev.target.files[0];
     const fileUrl = URL.createObjectURL(file);
 
+    playlistCover = file;
+
     renderPreview(fileUrl);
   }
 
@@ -83,5 +109,43 @@
     $fileCover.value = "";
     $plCover.value = "";
     $previewContainer.style = "";
+    playlistCover = null;
+  }
+
+  function onDragOver(ev) {
+    ev.preventDefault();
+
+    $fileContainer.classList.add("hovered");
+  }
+
+  function onDrop(ev) {
+    ev.preventDefault();
+    $fileContainer.classList.remove("hovered");
+
+    const file = ev.dataTransfer.files[0];
+    const fileUrl = URL.createObjectURL(file);
+
+    playlistCover = file;
+
+    renderPreview(fileUrl);
+  }
+
+  function removeHovered(ev) {
+    ev.preventDefault();
+
+    $fileContainer.classList.remove("hovered");
   }
 })();
+
+
+
+
+
+
+
+
+
+
+
+
+
