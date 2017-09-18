@@ -7,7 +7,7 @@
   const $loadPreview = document.getElementById("load-preview");
   const $fileCover = document.querySelector(".cover[type=file]");
   const $previewTypes = Array.from(document.querySelectorAll(".preview-source [type=radio]"));
-  const $previewContainer = document.querySelector(".preview");
+  const $previewContainer = document.querySelector(".cover-preview");
 
   $form.addEventListener("submit", createPlaylist);
   $loadPreview.addEventListener("click", loadPreview);

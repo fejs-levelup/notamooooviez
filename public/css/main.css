@@ -18,15 +18,24 @@ h1 {
   font-size: 16px;
 }
 
-#add-playlist > label {
+.wrapper {
+  display: flex;
+  justify-content: space-between;
+}
+
+.main-info {
+  width: 300px;
+}
+
+.main-info label {
   display: flex;
   justify-content: space-between;
   align-items: center;
   margin-bottom: 10px;
 }
 
-#add-playlist > label input {
-  width: 250px;
+.main-info input {
+  width: 200px;
   height: 24px;
   border: 1px solid #333;
   padding: 0 0 0 10px;
@@ -34,14 +43,16 @@ h1 {
 
 #add-playlist .fieldset {
   display: flex;
-  height: 70px;
-  justify-content: space-between;
-  align-items: center;
 }
 
-.preview {
-  height: 70px;
-  width: 140px;
+.cover-preview {
+  width: 90px;
+  height: 60px;
+  border: 1px solid #333;
+}
+
+.preview-source {
+  width: 100%;
 }
 
 #add-playlist legend {
@@ -54,6 +65,7 @@ h1 {
 }
 
 [name="cover-type"] ~ .cover,
+.file-container,
 #load-preview {
   display: none;
 }
@@ -63,8 +75,25 @@ h1 {
   display: inline-block;
 }
 
-[value="file"]:checked ~ [name="cover-file"] {
-  display: inline-block;
+[value="file"]:checked ~ .file-container {
+  display: flex;
+}
+
+.file-container {
+  justify-content: center;
+  align-items: center;
+  height: 150px;
+  border: 2px dashed #333;
+}
+
+.file-container [type="file"] {
+  display: none;
+}
+
+.file-container label {
+  padding: 10px;
+  background: antiquewhite;
+  border-radius: 5px;
 }
 
 #load-preview {

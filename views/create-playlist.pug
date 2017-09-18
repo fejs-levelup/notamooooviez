@@ -7,11 +7,14 @@ head
 body
   h1 Create new playlist
   form#add-playlist(action="/playlist", method="POST")
-    label Playlist title*
-      input(type="text", name="pl-title", required)
+    .wrapper
+      div.main-info
+        label Playlist title*
+          input(type="text", name="pl-title", required)
 
-    label Description*
-      input(type="text", name="pl-description", required)
+        label Description*
+          input(type="text", name="pl-description", required)
+      div.cover-preview &nbsp;
 
     div.fieldset
       div.preview-source
@@ -24,9 +27,11 @@ body
         br
         input.cover(type="text", name="cover-url")
         button#load-preview(type="button") Load
-        input.cover(type="file", name="cover-file")
+        
 
-      div.preview &nbsp;
+        div.file-container
+          label Select file
+            input.cover(type="file", name="cover-file")
     button(type="submit") Add Playlist
 
   script(src="/js/create-playlist.js")
