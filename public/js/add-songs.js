@@ -3,9 +3,12 @@
 (function() {
   var fileList = [];
   var songId = 0;
+  var genres = [],
+      playlists = [];
   const $fileSelector = document.getElementById("file-selector");
   const $songs = document.getElementById("songs");
   const $dialog = document.getElementById("edit-song");
+  const $dialogForm = $dialog.querySelector("form");
   const $saveDialog = $dialog.querySelector(".confirm-dialog");
   const $cancelDialog = $dialog.querySelector(".close-dialog");
 
@@ -16,8 +19,10 @@
 
     if(!file) return;
 
+    const $title = $dialog.querySelector("[name='title']");
     const $author = $dialog.querySelector("[name='author']");
 
+    file.title = $title.value;
     file.author = $author.value;
 
     $author.value = "";
@@ -116,6 +121,7 @@
       div.dataset.songId = file.id;
 
       const divContent = `
+        <input type="checkbox" title="select song">
         <span class="song-title">${file.title}</span>
         <span class="song-author">${file.author}</span>
         <span class="song-genre">${file.genre}</span>
@@ -130,4 +136,51 @@
 
     return files;
   }
+
+  fetch("/genres")
+    .then(res => res.json())
+    .then(res => {
+      var $select = document.createElement("select");
+
+      $select.name = "genre";
+
+      res.genres.forEach(genre => {
+        const $option = document.createElement("option");
+
+        $option.value = genre;
+        $select.appendChild($option);
+      });
+
+      $dialogForm.appendChild($select);
+    })
+    .catch(err => console.error("FETCHING GENRES:", err));
+
+  fetch("/all-playlist")
+    .then(res => res.json())
+    .then(res => {
+      var $select = document.createElement("select");
+
+      $select.name = "playlist";
+
+      res.playlists.forEach(playlist => {
+        const $option = document.createElement("option");
+
+        $option.value = playlist;
+        $select.appendChild($option);
+      });
+
+      $dialogForm.appendChild($select);
+    })
+    .catch(err => console.error("FETCHING PLAYLISTS:", err));
 })();
+
+
+
+
+
+
+
+
+
+
+

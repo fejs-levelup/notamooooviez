@@ -20,14 +20,21 @@ body
 
         a(href="/signout") Sign out
 
-  label(for="file-selector") Select Files
-    input#file-selector(type="file", accept=".mp3")
+  main
+    label(for="file-selector") Select Files
+      input#file-selector(type="file", accept=".mp3")
 
-  #songs
+    #songs
+      .headline
+        input#select-all(type="checkbox", title="Select all")
+        button#edit-all Edit
+
 
   dialog#edit-song
     h3 Edit song
-    input(type="text", name="author", placeholder="Author")
+    form(action="/")
+      input(type="text", name="title", placeholder="Song title")
+      input(type="text", name="author", placeholder="Author")
     div
       button.close-dialog Cancel
       button.confirm-dialog Save

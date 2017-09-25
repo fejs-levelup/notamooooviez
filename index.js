@@ -293,7 +293,7 @@ app
 
     if(coverType === "file" && file) {
       coverUrl = `/uploads/${file.originalname}`;
-    } else if(coverType === "url" && typeof url === "string" && !url.trim().length) {
+    } else if(coverType === "url" && typeof url === "string" && url.trim().length) {
       coverUrl = url;
     }
 
