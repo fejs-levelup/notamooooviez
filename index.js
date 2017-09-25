@@ -20,7 +20,8 @@ const express = require("express"),
   upload = multer({ storage }),
   passport = require("passport"),
   cookieParser = require("cookie-parser"),
-  LocalStrategy = require("passport-local").Strategy;
+  LocalStrategy = require("passport-local").Strategy,
+  genres = require("./commons/genres");
 
 const Nav = mongoose.model("AppNav", navSchema);
 const User = mongoose.model("User", userSchema);
@@ -89,7 +90,9 @@ passport.serializeUser((user, done) => {
 });
 
 passport.deserializeUser((username, done) => {
-  User.findOne({ username }, done);
+  User.findOne({ username }, (err, user) => {
+    done(err, user);
+  });
 });
 
 passport.use(new LocalStrategy((username, password, done) => {
@@ -320,6 +323,25 @@ app
       res.send(data);
     });
   });
+
+app.get("/genres", (req, res) => {
+  res.send({ genres: genres.list });
+});
+
+app.get("/all-playlist", (req, res) => {
+  Playlist.find({}, (err, data) => {
+    if(err) {
+      return res.status(500).end();
+    }
+
+    const playlists = data.map(pl => ({
+      id: pl._id,
+      title: pl.title
+    }));
+
+    res.send({ playlists });
+  });
+});
 
 // app.get("*", (req, res) => {
 //   res.render("index", { nav });

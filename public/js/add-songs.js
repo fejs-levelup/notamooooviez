@@ -137,7 +137,12 @@
     return files;
   }
 
-  fetch("/genres")
+  fetch("/genres", {
+    headers: {
+      "content-type": "application/json"
+    },
+    credentials: "include"
+  })
     .then(res => res.json())
     .then(res => {
       var $select = document.createElement("select");
@@ -148,6 +153,7 @@
         const $option = document.createElement("option");
 
         $option.value = genre;
+        $option.textContent = genre;
         $select.appendChild($option);
       });
 
@@ -155,17 +161,23 @@
     })
     .catch(err => console.error("FETCHING GENRES:", err));
 
-  fetch("/all-playlist")
+  fetch("/all-playlist", {
+    headers: {
+      "content-type": "application/json"
+    },
+    credentials: "include"
+  })
     .then(res => res.json())
     .then(res => {
       var $select = document.createElement("select");
 
       $select.name = "playlist";
 
-      res.playlists.forEach(playlist => {
+      res.playlists.forEach(({ id, title }) => {
         const $option = document.createElement("option");
 
-        $option.value = playlist;
+        $option.value = id;
+        $option.textContent = title;
         $select.appendChild($option);
       });
 
