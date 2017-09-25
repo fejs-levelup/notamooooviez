@@ -1,0 +1,24 @@
+doctype html
+head
+  meta(charset="utf-8")
+  title Add songs
+
+  link(rel="stylesheet", href="/css/add-songs.css")
+body
+  h1 Add new songs
+
+  label(for="file-selector") Select Files
+    input#file-selector(type="file", accept=".mp3")
+
+  #songs
+
+  dialog#edit-song
+    h3 Edit song
+    input(type="text", name="author", placeholder="Author")
+    div
+      button.close-dialog Cancel
+      button.confirm-dialog Save
+
+
+
+  script(src="/js/add-songs.js")

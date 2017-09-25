@@ -3,23 +3,28 @@ head
   meta(charset="utf-8")
   title NotITunes
 
-  link(rel="stylesheet", href="/css/main.css")
+  meta(name="viewport", content="width=device-width, initial-scale=1")
+
+  link(rel="stylesheet", href="https://fonts.googleapis.com/css?family=Lato:400,700")
+  link(rel="stylesheet", href="/css/common.css")
+  link(rel="stylesheet", href="/css/index.css")
 body
-  h1 not iTunes
+  header
+    nav
+      h1 not iTunes
+      ul
+        li.active Playlists
+        li: a(href="/playlist") + Add playlist
 
-  ul
-    each link in nav
-      li: a(href= link.url)= link.title
-
-  p= user.username
+      a(href="/signout") Sign out
 
   div.playlist-container
     each playlist in playlists
       - var src = playlist.cover || "http://cdn3-www.cattime.com/assets/uploads/2011/08/best-kitten-names-1.jpg";
 
-      div
-        div: img(src=src)
+      div.playlist-item
+        div.cover-container: img(src=src)
         h3= playlist.title
         p= playlist.description
-
-  p: a(href="/signout") Sign out
+        div.action-buttons
+          button Edit

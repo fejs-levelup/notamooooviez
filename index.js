@@ -325,6 +325,10 @@ app
 //   res.render("index", { nav });
 // });
 
+app.get("/add-songs", (req, res) => {
+  res.render("add-songs");
+});
+
 app.listen(8000, () => {
   console.log("Listening");
 });

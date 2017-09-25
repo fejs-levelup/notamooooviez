@@ -5,14 +5,8 @@ const song = new Schema({
     type: String,
     required: true
   },
-  author: {
-    type: String,
-    required: true
-  },
-  genre: {
-    type: String,
-    required: true
-  },
+  author: String,
+  genre: String,
   rate: {
     type: Number,
     default: 0
@@ -21,10 +15,7 @@ const song = new Schema({
     type: String,
     required: true
   },
-  playlistId: {
-    type: Schema.Types.ObjectId,
-    required: true
-  }
+  playlistId: Schema.Types.ObjectId
 });
 
 module.exports = song;

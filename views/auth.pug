@@ -3,17 +3,21 @@ head
   meta(charset="utf-8")
   title NotITunes
 
-  link(rel="stylesheet", href="/css/main.css")
+  meta(name="viewport", content="width=device-width, initial-scale=1")
+
+  link(rel="stylesheet", href="https://fonts.googleapis.com/css?family=Lato:400,700")
+  link(rel="stylesheet", href="/css/common.css")
+  link(rel="stylesheet", href="/css/auth.css")
 body
-  h1= headline
+  main
+    h1= headline
 
-  form(action=url, method="POST")
-    label Username: 
-      input(name="username", type="text", required)
-    br
-    label Password:
-      input(name="password", type="password", required)
-    br
-    button= submitText
+    form(action=url, method="POST")
+      label(for="username") Username: 
+      input#username(name="username", type="text", required)
 
-  p: a(href=alterPath)= alterText
+      label(for="password") Password:
+      input#password(name="password", type="password", required)
+
+      a.alter-path(href=alterPath)= alterText
+      button= submitText

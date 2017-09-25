@@ -3,35 +3,44 @@ head
   meta(charset="utf-8")
   title NotITunes
 
-  link(rel="stylesheet", href="/css/main.css")
+  link(rel="stylesheet", href="https://fonts.googleapis.com/css?family=Lato:400,700")
+  link(rel="stylesheet", href="/css/common.css")
+  //- link(rel="stylesheet", href="/css/main.css")
+  link(rel="stylesheet", href="/css/create-playlist.css")
 body
-  h1 Create new playlist
+  header
+    nav
+      h1 not iTunes
+      ul
+        li: a(href="/") Playlists
+        li.active + Add playlist
+
+      a(href="/signout") Sign out
+
   form#add-playlist(action="/playlist", method="POST")
-    .wrapper
-      div.main-info
-        label Playlist title*
-          input(type="text", name="pl-title", required)
+    label(for="pl-title") Playlist title*
+    input#pl-title(type="text", name="pl-title", required)
 
-        label Description*
-          input(type="text", name="pl-description", required)
-      div.cover-preview &nbsp;
+    label(for="pl-description") Description*
+    input#pl-description(type="text", name="pl-description", required)
 
-    div.fieldset
-      div.preview-source
-        input#url(type="radio", name="cover-type", value="url", checked)
-        label(for="url") URL
+    div.cover-preview
 
-        input#file(type="radio", name="cover-type", value="file")
-        label(for="file") Upload
+    div.preview-source
+      input#url(type="radio", name="cover-type", value="url", checked)
+      label(for="url") URL
 
-        br
-        input.cover(type="text", name="cover-url")
-        button#load-preview(type="button") Load
-        
+      input#file(type="radio", name="cover-type", value="file")
+      label(for="file") Upload
+      br
+      br
 
-        div.file-container
-          label Select file
-            input.cover(type="file", name="cover-file")
-    button(type="submit") Add Playlist
+      input.cover(type="text", name="cover-url")
+      button#load-preview(type="button") Load
+
+      div.file-container
+        label Select file
+          input.cover(type="file", name="cover-file")
+    button#create-playlist(type="submit") Add Playlist
 
   script(src="/js/create-playlist.js")
