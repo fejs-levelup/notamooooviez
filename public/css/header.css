@@ -1,0 +1,44 @@
+header {
+  height: 150px;
+  position: sticky;
+  top: -84px;
+  background: var(--primary-dark);
+  padding: 100px 0 20px;
+  box-sizing: border-box;
+  display: grid;
+  align-items: end;
+}
+
+nav,
+.playlist-container {
+  width: 600px;
+  max-width: calc(100vw - 20px);
+}
+
+nav {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  grid-column-gap: 20px;
+  align-items: end;
+  margin: 0 auto;
+}
+
+h1 {
+  color: var(--primary-text-light);
+  line-height: 1em;
+}
+
+nav > ul {
+  display: flex;
+  align-items: center;
+  list-style: none;
+  color: var(--primary-text-light);
+}
+
+nav > ul li {
+  margin: 0 10px;
+}
+
+nav a {
+  color: var(--primary-text-light);
+}
