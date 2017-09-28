@@ -15,12 +15,11 @@ main {
 
 #songs > div {
   display: grid;
-  grid-template-columns: 24px 3fr 2fr 2fr 1fr 1fr;
+  grid-template-columns: 3fr 2fr 1fr 2fr 1fr;
   grid-row-gap: 5px;
   grid-column-gap: 5px;
 }
 
-#edit-all,
 #songs button {
-  grid-column-start: -1;
+  grid-column-start: -2;
 }

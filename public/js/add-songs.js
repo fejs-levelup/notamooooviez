@@ -12,7 +12,9 @@
   const $saveDialog = $dialog.querySelector(".confirm-dialog");
   const $cancelDialog = $dialog.querySelector(".close-dialog");
 
+
   $fileSelector.addEventListener("change", onFileSelectorChanged);
+
   $saveDialog.addEventListener("click", ev => {
     const { songId } = $dialog.dataset;
     const file = fileList.find(_file => _file.id === +songId);
@@ -21,10 +23,16 @@
 
     const $title = $dialog.querySelector("[name='title']");
     const $author = $dialog.querySelector("[name='author']");
+    const $playlist = $dialog.querySelector("select[name='playlist']");
+    const $genre = $dialog.querySelector("select[name='genre']");
+    const $selectedOption = $playlist.selectedOptions[0];
 
     file.title = $title.value;
     file.author = $author.value;
+    file.genre = $genre.value;
+    file.setPlaylist($playlist.value, $selectedOption.textContent);
 
+    $title.value = "";
     $author.value = "";
     $dialog.close();
   });
@@ -78,11 +86,15 @@
     set playlistId(value) {
       this.__playlistId = value;
 
-      document
-        .querySelector(`[data-song-id=${this.__id}] .song-playlist`)
-        .textContent = value;
-
       return value;
+    }
+
+    setPlaylist(id, text) {
+      this.playlistId = id;
+
+      document
+        .querySelector(`[data-song-id="${this.__id}"] .song-playlist`)
+        .textContent = text;
     }
   }
 
@@ -121,7 +133,6 @@
       div.dataset.songId = file.id;
 
       const divContent = `
-        <input type="checkbox" title="select song">
         <span class="song-title">${file.title}</span>
         <span class="song-author">${file.author}</span>
         <span class="song-genre">${file.genre}</span>
@@ -149,6 +160,14 @@
 
       $select.name = "genre";
 
+      const $option = document.createElement("option");
+
+      $option.value = "";
+      $option.textContent = "Select genre";
+      $option.selected = "selected";
+
+      $select.appendChild($option);
+
       res.genres.forEach(genre => {
         const $option = document.createElement("option");
 
@@ -172,6 +191,14 @@
       var $select = document.createElement("select");
 
       $select.name = "playlist";
+
+      const $option = document.createElement("option");
+
+      $option.value = "";
+      $option.textContent = "Select playlist";
+      $option.selected = "selected";
+
+      $select.appendChild($option);
 
       res.playlists.forEach(({ id, title }) => {
         const $option = document.createElement("option");
