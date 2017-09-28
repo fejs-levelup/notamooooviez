@@ -17,21 +17,31 @@
   $submit.addEventListener("click", function(ev) {
     this.disabled = true;
 
-    fetch("/add-songs", {
-      method: "POST",
-      headers: {
-        "content-type": "application/json"
-      },
-      credentials: "include",
-      body: JSON.stringify({ songs: fileList })
-    })
-    .then(res => res.json())
-    .then(res => {
-      console.log(res);
-    })
-    .catch(err => {
-      console.error("ERROR SAVING SONGS", err);
+    const uploads = fileList.map(file => {
+      const body = new FormData();
+
+      body.append("title", file.title);
+      body.append("author", file.author);
+      body.append("genre", file.genre);
+      body.append("playlistId", file.playlistId);
+      body.append("file", file.file.name);
+      body.append("mediafile", file.file, file.file.name);
+
+      return fetch("/add-songs", {
+        method: "POST",
+        credentials: "include",
+        body
+      })
+      .then(res => res.json());
     });
+
+    Promise.all(uploads)
+      .then(res => {
+        location = location.origin;
+      })
+      .catch(err => {
+        console.error("ERROR SAVING SONGS", err);
+      });
   });
 
   $saveDialog.addEventListener("click", ev => {

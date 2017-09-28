@@ -15,7 +15,10 @@ const song = new Schema({
     type: String,
     required: true
   },
-  playlistId: Schema.Types.ObjectId
+  playlistId: {
+    type: Schema.Types.ObjectId,
+    ref: "Playlist"
+  }
 });
 
 module.exports = song;

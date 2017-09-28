@@ -136,7 +136,20 @@ app.get("/", (req, res) => {
     Playlist.find({}, (err, data) => {
       if(err) return rej(err);
 
-      res(data);
+      // res(data);
+      const playlists = data.map(mapSongs);
+
+      Promise.all(playlists).then(res).catch(rej);
+    });
+  });
+
+  const mapSongs = playlist => new Promise((res, rej) => {
+    const playlistId = playlist._id;
+
+    Songs.find({ playlistId: mongoose.Types.ObjectId(playlistId) }, (err, songs) => {
+      playlist.songs = songs;
+
+      res(playlist);
     });
   });
 
@@ -351,8 +364,16 @@ app.route("/add-songs")
   .get((req, res) => {
     res.render("add-songs");
   })
-  .post((req, res) => {
-    res.send(req.body);
+  .post(upload.single("mediafile"), (req, res) => {
+    Songs.create(req.body, (err, data) => {
+      if(err) {
+        return res
+          .status(500)
+          .send({ errorText: "Unable to save file" });
+      }
+
+      res.send(data);
+    });
   });
 
 app.listen(8000, () => {
