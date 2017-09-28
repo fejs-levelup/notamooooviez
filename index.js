@@ -347,9 +347,13 @@ app.get("/all-playlist", (req, res) => {
 //   res.render("index", { nav });
 // });
 
-app.get("/add-songs", (req, res) => {
-  res.render("add-songs");
-});
+app.route("/add-songs")
+  .get((req, res) => {
+    res.render("add-songs");
+  })
+  .post((req, res) => {
+    res.send(req.body);
+  });
 
 app.listen(8000, () => {
   console.log("Listening");

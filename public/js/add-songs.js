@@ -11,9 +11,28 @@
   const $dialogForm = $dialog.querySelector("form");
   const $saveDialog = $dialog.querySelector(".confirm-dialog");
   const $cancelDialog = $dialog.querySelector(".close-dialog");
-
+  const $submit = document.getElementById("save-songs");
 
   $fileSelector.addEventListener("change", onFileSelectorChanged);
+  $submit.addEventListener("click", function(ev) {
+    this.disabled = true;
+
+    fetch("/add-songs", {
+      method: "POST",
+      headers: {
+        "content-type": "application/json"
+      },
+      credentials: "include",
+      body: JSON.stringify({ songs: fileList })
+    })
+    .then(res => res.json())
+    .then(res => {
+      console.log(res);
+    })
+    .catch(err => {
+      console.error("ERROR SAVING SONGS", err);
+    });
+  });
 
   $saveDialog.addEventListener("click", ev => {
     const { songId } = $dialog.dataset;
@@ -143,6 +162,7 @@
       div.innerHTML = divContent;
 
       $songs.appendChild(div);
+      $submit.disabled = false;
     });
 
     return files;
